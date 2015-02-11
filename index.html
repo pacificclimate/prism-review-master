@@ -3,6 +3,8 @@
 <head>
 	<title>Leaflet.draw vector editing handlers</title>
 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
   <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
   <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
 
@@ -24,6 +26,61 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
     <!-- Optional theme -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+
+    <link rel="stylesheet" href="http://nakupanda.github.io/bootstrap3-dialog/assets/bootstrap-dialog/css/bootstrap-dialog.min.css">
+
+  <script src="http://builds.handlebarsjs.com.s3.amazonaws.com/handlebars-v3.0.0.js"></script>
+
+  <script src="template.js"></script>
+
+<script id="form-template" type="text/x-handlebars-template">
+  <form class="form-horizontal">
+    <fieldset>
+      <!-- Text input-->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="textinput">Name</label>
+        <div class="col-md-8">
+          <input id="textinput" name="name" type="text" placeholder="" class="form-control input-md">
+        </div>
+      </div>
+      <!-- Text input-->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="textinput">Email</label>
+        <div class="col-md-8">
+          <input id="textinput" name="email" type="text" placeholder="" class="form-control input-md">
+        </div>
+      </div>
+      <!-- Text input-->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="textinput">Latitude</label>
+        <div class="col-md-8">
+          <input id="textinput" name="lat" type="text" placeholder="" class="form-control input-md" value="{{lat}}">
+        </div>
+      </div>
+      <!-- Text input-->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="textinput">Longitude</label>
+        <div class="col-md-8">
+          <input id="textinput" name="lon" type="text" placeholder="" class="form-control input-md" value="{{lng}}">
+        </div>
+      </div>
+      <!-- Textarea -->
+      <div class="form-group">
+        <label class="col-md-4 control-label" for="textarea">Report Details</label>
+        <div class="col-md-8">
+          <textarea class="form-control" id="textarea" name="report"></textarea>
+        </div>
+      </div>
+      <!-- Button -->
+      <div class="form-group">
+        <label class="col-md-8 control-label" for="singlebutton"></label>
+        <div class="col-md-4">
+          <button type="submit" class="btn btn-primary">Generate Report</button>
+        </div>
+      </div>
+    </fieldset>
+  </form>
+</script>
 
     <style>
       html, body {
@@ -114,23 +171,30 @@
    edit: { featureGroup: drawnItems }
   }));
 
+  var source   = $("#form-template").html();
+  var template = Handlebars.compile(source);
+
   map.on('draw:created', function(event) {
     var type = event.layerType;
     var layer = event.layer;
-    if (type === 'marker') {
-        layer.bindPopup('<form class="form-horizontal"><fieldset><!-- Form Name --><legend>Data Report</legend><!-- Text input--><div class="form-group">  <label class="col-md-4 control-label" for="textinput">Name</label>    <div class="col-md-8">  <input id="textinput" name="textinput" type="text" placeholder="\"John Doe\"" class="form-control input-md">  </div></div><!-- Text input--><div class="form-group">  <label class="col-md-4 control-label" for="textinput">Email</label>    <div class="col-md-8">  <input id="textinput" name="textinput" type="text" placeholder="" class="form-control input-md">  </div></div><!-- Text input--><div class="form-group">  <label class="col-md-4 control-label" for="textinput">Latitude</label>    <div class="col-md-8">  <input id="textinput" name="textinput" type="text" placeholder="" class="form-control input-md" value=' + layer.getLatLng().lat.toFixed(4) + '>  </div></div><!-- Text input--><div class="form-group">  <label class="col-md-4 control-label" for="textinput">Longitude</label>    <div class="col-md-8">  <input id="textinput" name="textinput" type="text" placeholder="" class="form-control input-md" value=' + layer.getLatLng().lng.toFixed(4) + '>  </div></div><!-- Textarea --><div class="form-group">  <label class="col-md-4 control-label" for="textarea">Report Details</label>  <div class="col-md-8">                         <textarea class="form-control" id="textarea" name="textarea"></textarea>  </div></div><!-- Button --><div class="form-group">  <label class="col-md-8 control-label" for="singlebutton"></label>  <div class="col-md-4">    <button id="singlebutton" name="singlebutton" class="btn btn-primary">Generate Report</button>  </div></div></fieldset></form>',
-          {maxWidth:"none"});
-    }
+    var lat = layer.getLatLng().lat.toFixed(4);
+    var lng = layer.getLatLng().lng.toFixed(4);
+    var html = template({lat: lat, lng: lng});
+    BootstrapDialog.show({
+      title: "Data Report",
+      message: $(html)
+    });
+
     drawnItems.addLayer(layer);
-    layer.openPopup()
 		});
 
   var base = new Firebase('https://mapboxexample.firebaseio.com/')
 
   </script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+<script src="http://nakupanda.github.io/bootstrap3-dialog/assets/bootstrap-dialog/js/bootstrap-dialog.min.js"></script>
+
 </body>
 </html>
