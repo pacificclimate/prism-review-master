@@ -16,11 +16,18 @@
     <script src="L.Control.MousePosition.js"></script>
 	<link rel="stylesheet" href="L.Control.MousePosition.css" />
 
+    <!-- Bootstrap -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+
     <style>
       html, body {
       margin: 0;
       height: 100%;
       }
+      fieldset { width:480px; }
     </style>
 
 </head>
@@ -105,7 +112,7 @@
     var type = event.layerType;
     var layer = event.layer;
     if (type === 'marker') {
-        layer.bindPopup('<fieldset class="clearfix input-pill pill mobile-cols"><input type="text" id="message" /><button id="add-button" class="col3">Add</button></fieldset>');
+        layer.bindPopup('<form class="form-horizontal"><fieldset><!-- Form Name --><legend>Date Report</legend><!-- Text input--><div class="form-group">  <label class="col-md-4 control-label" for="textinput">Name</label>    <div class="col-md-4">  <input id="textinput" name="textinput" type="text" placeholder="\"John Doe\"" class="form-control input-md">  </div></div><!-- Text input--><div class="form-group">  <label class="col-md-4 control-label" for="textinput">Email</label>    <div class="col-md-4">  <input id="textinput" name="textinput" type="text" placeholder="" class="form-control input-md">  </div></div><!-- Textarea --><div class="form-group">  <label class="col-md-4 control-label" for="textarea">Report Details</label>  <div class="col-md-4">                         <textarea class="form-control" id="textarea" name="textarea"></textarea>  </div></div><!-- Button --><div class="form-group">  <label class="col-md-4 control-label" for="singlebutton"></label>  <div class="col-md-4">    <button id="singlebutton" name="singlebutton" class="btn btn-primary">Generate Report</button>  </div></div></fieldset></form>');
     }
     drawnItems.addLayer(layer);
     layer.openPopup()
