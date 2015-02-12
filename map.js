@@ -58,7 +58,7 @@ var tmin = L.tileLayer.wms('http://atlas.pcic.uvic.ca/ncWMS/wms', {
   noWrap: true,
 });
 
-// var prismLayers = L.layerGroup([pr, tmax, tmin]).addTo(map);
+// Add grouped layer control
 var groupedOverlays = {
   "PRISM Climatologies": {
     "Max Temp": tmax,
@@ -69,9 +69,9 @@ var groupedOverlays = {
 var options = { exclusiveGroups: ["PRISM Climatologies"] };
 L.control.groupedLayers(null, groupedOverlays, options).addTo(map);
 
-var drawnItems = L.featureGroup().addTo(map);
 
-L.control.mousePosition().addTo(map);
+// Leaflet-edit
+var drawnItems = L.featureGroup().addTo(map);
 
 map.addControl(new L.Control.Draw({
   draw: {
@@ -80,3 +80,6 @@ map.addControl(new L.Control.Draw({
     circle: false
   },
 }));
+
+// Add mouse position
+L.control.mousePosition().addTo(map);
