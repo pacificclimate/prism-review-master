@@ -35,6 +35,7 @@ var pr = L.tileLayer.wms('http://atlas.pcic.uvic.ca/ncWMS/wms', {
   styles: 'boxfill/occam_inv',
   logscale: true,
   numcolorbands: 254,
+  noWrap: true,
 }).addTo(map);
 var tmax = L.tileLayer.wms('http://atlas.pcic.uvic.ca/ncWMS/wms', {
   layers: 'tmax_monClim_PRISM_historical_run1_197101-200012/tmax',
@@ -44,6 +45,7 @@ var tmax = L.tileLayer.wms('http://atlas.pcic.uvic.ca/ncWMS/wms', {
   styles: 'boxfill/ferret',
   logscale: false,
   numcolorbands: 254,
+  noWrap: true,
 });
 var tmin = L.tileLayer.wms('http://atlas.pcic.uvic.ca/ncWMS/wms', {
   layers: 'tmin_monClim_PRISM_historical_run1_197101-200012/tmin',
@@ -53,6 +55,7 @@ var tmin = L.tileLayer.wms('http://atlas.pcic.uvic.ca/ncWMS/wms', {
   styles: 'boxfill/ferret',
   logscale: false,
   numcolorbands: 254,
+  noWrap: true,
 });
 
 // var prismLayers = L.layerGroup([pr, tmax, tmin]).addTo(map);
@@ -71,5 +74,10 @@ var drawnItems = L.featureGroup().addTo(map);
 L.control.mousePosition().addTo(map);
 
 map.addControl(new L.Control.Draw({
- edit: { featureGroup: drawnItems }
+  draw: {
+    polyline: false,
+    polygon: false,
+    rectangle: false,
+    circle: false
+  },
 }));

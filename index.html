@@ -3,6 +3,8 @@
 <head>
 	<title>Leaflet.draw vector editing handlers</title>
 
+  <script src='https://cdn.firebase.com/js/client/1.0.6/firebase.js'></script>
+
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 
   <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
@@ -140,19 +142,25 @@ $.fn.serializeObject = function()
   <script src="map.js"></script>
 
 	<script>
+  var base = new Firebase('https://shining-fire-5210.firebaseio.com/')
 
   var source   = $("#form-template").html();
   var template = Handlebars.compile(source);
+  var layer;
 
   map.on('draw:created', function(event) {
     var type = event.layerType;
-    var layer = event.layer;
+    layer = event.layer;
     var lat = layer.getLatLng().lat.toFixed(4);
     var lng = layer.getLatLng().lng.toFixed(4);
     var $html = $(template({lat: lat, lng: lng}));
     $html.submit(function(event) {
-      alert(JSON.stringify($('#report').serializeObject()));
       event.preventDefault();
+      var params = $('#report').serializeObject()
+      var geojson = layer.toGeoJSON();
+      geojson.properties = params;
+      drawnItems.addLayer(layer);
+      base.push(geojson);
     });
 
     BootstrapDialog.show({
@@ -160,11 +168,18 @@ $.fn.serializeObject = function()
       message: $html
     });
 
-    drawnItems.addLayer(layer);
 		});
 
-  var base = new Firebase('https://shining-fire-5210.firebaseio.com/')
-
+base.limit(200).on('child_added', function(snapshot) {
+    // And for each new marker, add a featureLayer.
+    L.geoJson(snapshot.val()).eachLayer(function(l) {
+      // each marker should have a label with its title.
+      var geojson = l.toGeoJSON();
+      if (geojson && geojson.properties && geojson.properties.name && geojson.properties.layer && geojson.properties.report) {
+        l.bindPopup('<table class="table"><tr><th scope="row">Submitted By:</th><td>'+geojson.properties.name+'</td></tr><tr><th scope="row">Layer</th><td>'+geojson.properties.layer+'</td></tr><tr><th scope="row">Details</th><td>'+geojson.properties.report+'</td></tr></table>');
+      }
+    }).addTo(map);
+});
 
   </script>
 
