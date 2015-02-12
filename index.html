@@ -91,13 +91,6 @@
           <textarea class="form-control" id="textarea" name="report"></textarea>
         </div>
       </div>
-      <!-- Button -->
-      <div class="form-group">
-        <label class="col-md-4 control-label" for="singlebutton"></label>
-        <div class="col-md-4">
-          <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
-      </div>
     </fieldset>
   </form>
 </script>
@@ -148,18 +141,27 @@ $.fn.serializeObject = function()
     var wkt = toWKT(layer);
     var $html = $(template({wkt: wkt}));
 
-    $html.submit(function(event) {
-      event.preventDefault();
-      var params = $('#report').serializeObject()
-      var geojson = layer.toGeoJSON();
-      geojson.properties = params;
-      drawnItems.addLayer(layer);
-      base.push(geojson);
-    });
-
     BootstrapDialog.show({
       title: "PRISM Data Annotation",
-      message: $html
+      message: $html,
+      buttons: [{
+        label: 'Submit (no undo)',
+        cssClass: 'btn-primary',
+        action: function(dialogRef){
+          var params = $('#report').serializeObject()
+          var geojson = layer.toGeoJSON();
+          geojson.properties = params;
+          drawnItems.addLayer(layer);
+          base.push(geojson);
+          dialogRef.close();
+        }
+      }, {
+        label: 'Cancel',
+        cssClass: 'btn-danger',
+        action: function(dialogRef){
+          dialogRef.close();
+        }
+      }]
     });
   });
 
