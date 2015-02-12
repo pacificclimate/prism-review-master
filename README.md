@@ -1,4 +1,4 @@
 PRISM Review Map
 ================
 
-Check it out here: http://basilveerman.github.io/prism-review
+Check it out here: http://pacificclimate.github.io/prism-review

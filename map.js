@@ -30,6 +30,7 @@ var osm = L.tileLayer('http://{s}.tiles.pacificclimate.org/tilecache/tilecache.p
 var pr = L.tileLayer.wms('http://atlas.pcic.uvic.ca/ncWMS/wms', {
   layers: 'pr_monClim_PRISM_historical_run1_197101-200012/pr',
   transparent: true,
+  opacity: 0.65,
   format: 'image/png',
   time: '1985-06-30',
   styles: 'boxfill/occam_inv',
@@ -40,6 +41,7 @@ var pr = L.tileLayer.wms('http://atlas.pcic.uvic.ca/ncWMS/wms', {
 var tmax = L.tileLayer.wms('http://atlas.pcic.uvic.ca/ncWMS/wms', {
   layers: 'tmax_monClim_PRISM_historical_run1_197101-200012/tmax',
   transparent: true,
+  opacity: 0.65,
   format: 'image/png',
   time: '1985-06-30',
   styles: 'boxfill/ferret',
@@ -50,6 +52,7 @@ var tmax = L.tileLayer.wms('http://atlas.pcic.uvic.ca/ncWMS/wms', {
 var tmin = L.tileLayer.wms('http://atlas.pcic.uvic.ca/ncWMS/wms', {
   layers: 'tmin_monClim_PRISM_historical_run1_197101-200012/tmin',
   transparent: true,
+  opacity: 0.65,
   format: 'image/png',
   time: '1985-06-30',
   styles: 'boxfill/ferret',
