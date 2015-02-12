@@ -76,7 +76,6 @@ L.control.mousePosition().addTo(map);
 map.addControl(new L.Control.Draw({
   draw: {
     polyline: false,
-    polygon: false,
     rectangle: false,
     circle: false
   },
