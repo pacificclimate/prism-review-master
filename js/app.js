@@ -12,7 +12,7 @@ $(document).ready(function() {
       BootstrapDialog.show({
         message: "You must first log in to place markers",
         type: BootstrapDialog.TYPE_DANGER
-      })
+      });
       return;
     }
     var type = event.layerType;
@@ -28,6 +28,8 @@ $(document).ready(function() {
         cssClass: 'btn-primary',
         action: function(dialogRef){
           var params = $('#report').serializeObject()
+          params.name = user.name;
+          params.email = user.email;
           var geojson = layer.toGeoJSON();
           geojson.properties = params;
           if (paramsAreValid(params)) {
@@ -107,5 +109,10 @@ $(document).ready(function() {
   });
   $("#logout").click(function(){
     hello.logout("google");
+  });
+
+  BootstrapDialog.show({
+    message: "This application requires you to log in with a Google account. Once logged in, your data will be automatically saved.",
+    type: BootstrapDialog.TYPE_INFO
   });
 });
