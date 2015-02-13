@@ -29,8 +29,8 @@ L.Control.OverlayLegend = L.Control.extend({
     return this._container;
   },
 
-  _onOverlayChange: function(layer) {
-    this._container.innerHTML = '<img src="' + this.graphicURL(layer.layer) + '">';
+  _onOverlayChange: function(e) {
+    this._container.innerHTML = '<img src="' + this.graphicURL(e.layer) + '">';
   }
 });
 
