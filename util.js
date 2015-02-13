@@ -19,3 +19,11 @@ function toWKT(layer) {
         return "POINT(" + layer.getLatLng().lng.toFixed(4) + " " + layer.getLatLng().lat.toFixed(4) + ")";
     }
 }
+
+function paramsAreValid(params) {
+    if(params.name.length === 0 || params.email.lenth === 0 || params.report.length === 0 || params.layer.length === 0) {
+        return false;
+    } else {
+        return true;
+    }
+}

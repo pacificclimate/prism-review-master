@@ -147,9 +147,12 @@ $.fn.serializeObject = function()
           var params = $('#report').serializeObject()
           var geojson = layer.toGeoJSON();
           geojson.properties = params;
-          drawnItems.addLayer(layer);
-          base.push(geojson);
-          dialogRef.close();
+          if (paramsAreValid(params)) {
+            base.push(geojson);
+            dialogRef.close();
+          } else {
+            alert("All fields are required");
+          }
         }
       }, {
         label: 'Cancel',
