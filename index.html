@@ -3,23 +3,10 @@
 <head>
 	<title>Leaflet.draw vector editing handlers</title>
 
-  <script src='https://cdn.firebase.com/js/client/1.0.6/firebase.js'></script>
-
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
-
-  <!-- Leaflet -->
+  <!-- Leaflet CSS-->
   <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
-  <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
-
-  <!-- Leaflet plugins -->
-	<script src="http://leaflet.github.io/Leaflet.draw/leaflet.draw.js"></script>
-	<link rel="stylesheet" href="http://leaflet.github.io/Leaflet.draw/leaflet.draw.css" />
-  <script src="http://rawgithub.com/kartena/Proj4Leaflet/master/lib/proj4-compressed.js"></script>
-  <script src="http://rawgithub.com/kartena/Proj4Leaflet/master/src/proj4leaflet.js"></script>
-  <script src="lib/L.Control.MousePosition.js"></script>
+  <link rel="stylesheet" href="http://leaflet.github.io/Leaflet.draw/leaflet.draw.css" />
   <link rel="stylesheet" href="lib/L.Control.MousePosition.css" />
-  <script src="lib/leaflet.groupedlayercontrol.js"></script>
   <link rel="stylesheet" href="lib/leaflet.groupedlayercontrol.css" />
 
   <!-- Bootstrap -->
@@ -27,99 +14,39 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
   <link rel="stylesheet" href="http://nakupanda.github.io/bootstrap3-dialog/assets/bootstrap-dialog/css/bootstrap-dialog.min.css">
 
+  <!-- Zocial -->
+  <link rel="stylesheet" href="bower_components/zocial/css/zocial.css" />
+
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Leaflet  -->
+  <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+	<script src="http://leaflet.github.io/Leaflet.draw/leaflet.draw.js"></script>
+  <script src="http://rawgithub.com/kartena/Proj4Leaflet/master/lib/proj4-compressed.js"></script>
+  <script src="http://rawgithub.com/kartena/Proj4Leaflet/master/src/proj4leaflet.js"></script>
+  <script src="lib/L.Control.MousePosition.js"></script>
+  <script src="lib/leaflet.groupedlayercontrol.js"></script>
+
   <!-- Handlebars -->
   <script src="http://builds.handlebarsjs.com.s3.amazonaws.com/handlebars-v3.0.0.js"></script>
 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 
-<script>
-$.fn.serializeObject = function()
-{
-    var o = {};
-    var a = this.serializeArray();
-    $.each(a, function() {
-        if (o[this.name] !== undefined) {
-            if (!o[this.name].push) {
-                o[this.name] = [o[this.name]];
-            }
-            o[this.name].push(this.value || '');
-        } else {
-            o[this.name] = this.value || '';
-        }
-    });
-    return o;
-};
-</script>
-
-    <style>
-      html, body {
-      margin: 0;
-      height: 100%;
-      }
-      fieldset { width:480px; }
-    </style>
+  <script src="map.js"></script>
+  <script src="util.js"></script>
+  <script src="template.js"></script>
+  <script src="app.js"></script>
 
 </head>
 <body>
 	<div id="map" style="width: 100%; height: 100%; border: 1px solid #ccc"></div>
-  <script src="map.js"></script>
-  <script src="util.js"></script>
-  <script src="template.js"></script>
 
-	<script>
-  var base = new Firebase('https://shining-fire-5210.firebaseio.com/')
 
-  var template = Handlebars.getTemplate('datareport');
-  var layer;
-
-  map.on('draw:created', function(event) {
-    var type = event.layerType;
-    layer = event.layer;
-    var wkt = toWKT(layer);
-    var $html = $(template({wkt: wkt}));
-
-    BootstrapDialog.show({
-      title: "PRISM Data Annotation",
-      message: $html,
-      buttons: [{
-        label: 'Submit (no undo)',
-        cssClass: 'btn-primary',
-        action: function(dialogRef){
-          var params = $('#report').serializeObject()
-          var geojson = layer.toGeoJSON();
-          geojson.properties = params;
-          if (paramsAreValid(params)) {
-            base.push(geojson);
-            dialogRef.close();
-          } else {
-            alert("All fields are required");
-          }
-        }
-      }, {
-        label: 'Cancel',
-        cssClass: 'btn-danger',
-        action: function(dialogRef){
-          dialogRef.close();
-        }
-      }]
-    });
-  });
-
-base.limit(200).on('child_added', function(snapshot) {
-    // And for each new marker, add a featureLayer.
-    L.geoJson(snapshot.val()).eachLayer(function(l) {
-      // each marker should have a label with its title.
-      var geojson = l.toGeoJSON();
-      if (geojson && geojson.properties && geojson.properties.name && geojson.properties.layer && geojson.properties.report) {
-        l.bindPopup('<table class="table"><tr><th scope="row">Submitted By:</th><td>'+geojson.properties.name+'</td></tr><tr><th scope="row">Layer</th><td>'+geojson.properties.layer+'</td></tr><tr><th scope="row">Details</th><td>'+geojson.properties.report+'</td></tr></table>');
-      }
-    }).addTo(map);
-});
-
-  </script>
-
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-<script src="http://nakupanda.github.io/bootstrap3-dialog/assets/bootstrap-dialog/js/bootstrap-dialog.min.js"></script>
+  <!-- Bootstrap -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  <script src="http://nakupanda.github.io/bootstrap3-dialog/assets/bootstrap-dialog/js/bootstrap-dialog.min.js"></script>
+  <script src='https://cdn.firebase.com/js/client/1.0.6/firebase.js'></script>
 
 </body>
 </html>
