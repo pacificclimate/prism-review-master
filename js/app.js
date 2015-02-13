@@ -6,6 +6,15 @@ $(document).ready(function() {
   var user;
 
   map.on('draw:created', function(event) {
+
+    var g = hello("google").getAuthResponse();
+    if (!online(g)) {
+      BootstrapDialog.show({
+        message: "You must first log in to place markers",
+        type: BootstrapDialog.TYPE_DANGER
+      })
+      return;
+    }
     var type = event.layerType;
     layer = event.layer;
     var wkt = toWKT(layer);
@@ -25,7 +34,7 @@ $(document).ready(function() {
             base.push(geojson);
             dialogRef.close();
           } else {
-            alert("All fields are required");
+            alert("Report details are required");
           }
         }
       }, {
@@ -78,6 +87,7 @@ $(document).ready(function() {
 
   hello.on('auth.logout', function(auth) {
     // Change to login button
+    user = undefined;
     $("#login").show();
     $("#logout").hide();
     // Remove profile information

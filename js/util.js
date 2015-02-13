@@ -21,7 +21,7 @@ function toWKT(layer) {
 }
 
 function paramsAreValid(params) {
-    if(params.name.length === 0 || params.email.lenth === 0 || params.report.length === 0 || params.layer.length === 0) {
+    if( params.report.length === 0 ) {
         return false;
     } else {
         return true;
@@ -43,4 +43,9 @@ $.fn.serializeObject = function()
         }
     });
     return o;
+};
+
+function online(session){
+    var current_time = (new Date()).getTime() / 1000;
+    return session && session.access_token && session.expires > current_time;
 };
