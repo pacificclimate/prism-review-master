@@ -23,14 +23,14 @@ L.Control.OverlayLegend = L.Control.extend({
   onAdd: function (map) {
     this._container = L.DomUtil.create('div', 'info legend');
     L.DomEvent.disableClickPropagation(this._container);
-    map.on('overlayadd', this._onOverlayChange);
+    map.on('overlayadd', this._onOverlayChange, this);
     this._container.id = this.options.div_id;
     this._container.innerHTML = '<img src="' + this.graphicURL(this.options.layer) + '">';
     return this._container;
   },
 
   _onOverlayChange: function(layer) {
-    this._container.innerHTML = '<img src="' + this.graphicURL(layer) + '">';
+    this._container.innerHTML = '<img src="' + this.graphicURL(layer.layer) + '">';
   }
 });
 
