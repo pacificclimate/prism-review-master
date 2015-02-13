@@ -91,18 +91,8 @@ map.addControl(new L.Control.Draw({
 // Add mouse position
 L.control.mousePosition().addTo(map);
 
-var legend = L.Control.extend({
-  options: {
-    position: 'bottomright'
-  },
-
-  onAdd : function (map) {
-    var div = L.DomUtil.create('div', 'info legend');
-    div.innerHTML = '<img src="http://medusa.pcic.uvic.ca:8080/ncWMS/wms?REQUEST=GetLegendGraphic&WIDTH=100&HEIGHT=398&PALETTE=ferret&NUMCOLORBANDS=254&LAYER=bcprism_ppt_7100/pr">';
-    return div;
-  }
-});
-map.addControl(new legend());
+// Add overlay legend
+L.control.OverlayLegend({layer: pr}).addTo(map);
 
 return map;
 }
