@@ -16,8 +16,10 @@ var map = new L.Map('map',
     zoom: 2,
     maxBounds: L.latLngBounds([[45, -148], [62, -108]]),
     worldCopyJump: false
-  }
-  );
+  });
+
+var reportLayer = L.geoJson().addTo(map);
+map.reportLayer = reportLayer;
 
 var osm = L.tileLayer('http://{s}.tiles.pacificclimate.org/tilecache/tilecache.py/1.0.0/bc_osm/{z}/{x}/{y}.png', 
   {
