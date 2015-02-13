@@ -4,6 +4,7 @@ $(document).ready(function() {
 
   var template = Handlebars.getTemplate('datareport');
   var layer;
+  var user;
 
   map.on('draw:created', function(event) {
     var type = event.layerType;
@@ -39,13 +40,51 @@ $(document).ready(function() {
   });
 
   base.limit(200).on('child_added', function(snapshot) {
-      // And for each new marker, add a featureLayer.
-      L.geoJson(snapshot.val()).eachLayer(function(l) {
-        // each marker should have a label with its title.
-        var geojson = l.toGeoJSON();
-        if (geojson && geojson.properties && geojson.properties.name && geojson.properties.layer && geojson.properties.report) {
-          l.bindPopup('<table class="table"><tr><th scope="row">Submitted By:</th><td>'+geojson.properties.name+'</td></tr><tr><th scope="row">Layer</th><td>'+geojson.properties.layer+'</td></tr><tr><th scope="row">Details</th><td>'+geojson.properties.report+'</td></tr></table>');
-        }
-      }).addTo(map);
+    // And for each new marker, add a featureLayer.
+    L.geoJson(snapshot.val()).eachLayer(function(l) {
+      // each marker should have a label with its title.
+      var geojson = l.toGeoJSON();
+      if (geojson && geojson.properties && geojson.properties.name && geojson.properties.layer && geojson.properties.report) {
+        l.bindPopup('<table class="table"><tr><th scope="row">Submitted By:</th><td>'+geojson.properties.name+'</td></tr><tr><th scope="row">Layer</th><td>'+geojson.properties.layer+'</td></tr><tr><th scope="row">Details</th><td>'+geojson.properties.report+'</td></tr></table>');
+      }
+    }).addTo(map);
+  });
+
+  hello.on('auth.login', function(auth) {
+    // call user information, for the given network
+    hello( auth.network ).api( '/me' ).then( function(r){
+    // Change to logout
+    $("#login").hide();
+    $("#logout").show();
+
+    // Inject login info into container
+    var container = document.getElementById("auth");
+    label = document.createElement("div");
+    label.id = "profile";
+    container.appendChild(label);
+      label.innerHTML = '&nbsp;<center><img src="'+ r.thumbnail +'" class="img-circle" /><strong> Hello '+r.first_name + '</strong></center>';
+    });
+  });
+
+  hello.on('auth.logout', function(auth) {
+    // Change to login button
+    $("#login").show();
+    $("#logout").hide();
+    // Remove profile information
+    var label = document.getElementById("profile");
+    label.parentNode.removeChild(label);
+  });
+
+  hello.init({
+    google   : '672630562121-8rrr7skrrb9qq4r5putbjfm2v7jam770.apps.googleusercontent.com'
+  },{
+    scope: 'email'
+  });
+
+  $("#login").click(function(){
+    hello.login("google");
+  });
+  $("#logout").click(function(){
+    hello.logout("google");
   });
 });

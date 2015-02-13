@@ -30,6 +30,9 @@
   <!-- Handlebars -->
   <script src="http://builds.handlebarsjs.com.s3.amazonaws.com/handlebars-v3.0.0.js"></script>
 
+  <!-- Hello.js -->
+  <script src="bower_components/hello/dist/hello.all.min.js"></script>
+
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
 
@@ -38,9 +41,16 @@
   <script src="js/template.js"></script>
   <script src="js/app.js"></script>
 
+
+
 </head>
 <body>
-	<div id="map" style="width: 100%; height: 100%; border: 1px solid #ccc"></div>
+	<div id="map" class="container">
+    <div id="auth" class="col-lg-4 center-block" style="margin-top:10px;float:none;">
+      <center><button id="login" class="zocial google">Login with Google</button></center>
+      <center><button id="logout" class="zocial google" style="display: none;">Logout from Google</button></center>
+    </div>
+</div>
 
 
   <!-- Bootstrap -->

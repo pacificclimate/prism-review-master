@@ -1,0 +1,21 @@
+{
+  "name": "prism-review",
+  "version": "0.0.0",
+  "homepage": "https://github.com/pacificclimate/prism-review",
+  "authors": [
+    "Basil Veerman <bveerman@uvic.ca>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "hello": "~1.4.1",
+    "zocial": "*"
+  }
+}
