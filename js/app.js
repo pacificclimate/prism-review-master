@@ -9,7 +9,7 @@ $(document).ready(function() {
     var type = event.layerType;
     layer = event.layer;
     var wkt = toWKT(layer);
-    var $html = $(template({wkt: wkt}));
+    var $html = $(template({wkt: wkt, name: user.name, email: user.email}));
 
     BootstrapDialog.show({
       title: "PRISM Data Annotation",
@@ -56,6 +56,8 @@ $(document).ready(function() {
   hello.on('auth.login', function(auth) {
     // call user information, for the given network
     hello( auth.network ).api( '/me' ).then( function(r){
+      user = r;
+
       // Change to logout
       $("#login").hide();
       $("#logout").show();
