@@ -76,18 +76,6 @@ var groupedOverlays = {
 var options = { exclusiveGroups: ["PRISM Climatologies"] };
 L.control.groupedLayers(null, groupedOverlays, options).addTo(map);
 
-
-// Leaflet-edit
-var drawnItems = L.featureGroup().addTo(map);
-
-map.addControl(new L.Control.Draw({
-  draw: {
-    polyline: false,
-    rectangle: false,
-    circle: false
-  },
-}));
-
 // Add mouse position
 L.control.mousePosition().addTo(map);
 
